@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Head from "next/head";
 import { Inter } from "next/font/google";
+import { RandomFox } from "@/components/RandomFox";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,7 @@ export default function Home() {
 
       <main>
         <h1 className="text-3xl font-bold underline">Hey Platzi 😎!</h1>
+        <RandomFox />
       </main>
 
       <footer></footer>
