@@ -1,7 +1,7 @@
 import { MouseEventHandler, useState } from "react";
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import { RandomFox } from "@/components/RandomFox";
+import { LazyImage } from "@/components/RandomFox";
 
 const inter = Inter({ subsets: ["latin"] });
 const random = () => Math.floor(Math.random() * 123) + 1;
@@ -34,7 +34,14 @@ export default function Home() {
         <button onClick={addNewFox}>Add new fox</button>
         {images.map(({ id, url }) => (
           <div key={id} className="p-4">
-            <RandomFox image={url} />
+            <LazyImage
+              src={url}
+              width={320}
+              height="auto"
+              title="Random Fox"
+              className="rounded bg-gray-300"
+              onClick={() => console.log("hola")}
+            />
           </div>
         ))}
       </main>

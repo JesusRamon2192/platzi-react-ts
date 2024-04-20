@@ -1,10 +1,12 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, ImgHTMLAttributes } from "react";
 
-type Props = { image: string };
+type LazyImageProps = { src: string };
+type ImageNative = ImgHTMLAttributes<HTMLImageElement>;
+type Props = LazyImageProps & ImageNative;
 
-export const RandomFox = ({ image }: Props): JSX.Element => {
+export const LazyImage = ({ src, ...imgProps }: Props): JSX.Element => {
   const node = useRef<HTMLImageElement>(null);
-  const [src, setSrc] = useState(
+  const [currentSrc, setCurrentSrc] = useState(
     "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=",
   );
 
@@ -14,7 +16,7 @@ export const RandomFox = ({ image }: Props): JSX.Element => {
         //onIntersection -> consolelog
         if (entry.isIntersecting) {
           console.log("heyyou");
-          setSrc(image);
+          setCurrentSrc(src);
         }
       });
     });
@@ -27,16 +29,14 @@ export const RandomFox = ({ image }: Props): JSX.Element => {
     return () => {
       observer.disconnect();
     };
-  }, [image]);
-  //nuevo observador
+  }, [src]);
 
   return (
     <img
       ref={node}
-      width={320}
-      height="auto"
-      src={src}
+      src={currentSrc}
       className="rounded bg-gray-300"
+      {...imgProps}
     />
   );
 };
