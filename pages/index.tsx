@@ -15,11 +15,6 @@ const generateId = (): string => {
 // random number from 1 to 122
 const random = () => Math.floor(Math.random() * 122) + 1;
 
-type ImageItem = {
-  id: string;
-  url: string;
-};
-
 const Home: NextPage = () => {
   const [images, setImages] = useState<Array<ImageItem>>([]);
 
