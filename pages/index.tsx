@@ -1,24 +1,32 @@
-import { MouseEventHandler, useState } from "react";
+import { useState } from "react";
+import type { MouseEventHandler } from "react";
+import type { NextPage } from "next";
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import { LazyImage } from "@/components/RandomFox";
 
-const inter = Inter({ subsets: ["latin"] });
-const random = () => Math.floor(Math.random() * 123) + 1;
+// generate simple unique id
+const generateId = (): string => {
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
+};
 
-const generateId = () => Math.random().toString(36).substring(2, 9);
-type ImageItem = { id: string; url: string };
+// random number from 1 to 122
+const random = () => Math.floor(Math.random() * 122) + 1;
 
-export default function Home() {
+type ImageItem = {
+  id: string;
+  url: string;
+};
+
+const Home: NextPage = () => {
   const [images, setImages] = useState<Array<ImageItem>>([]);
 
-  const addNewFox: MouseEventHandler<HTMLButtonElement> = (e) => {
-    const newImageItem: ImageItem = {
-      id: "generateId()",
-      url: `https://randomfox.ca/images/${random()}.jpg`,
-    };
-
-    setImages([...images, newImageItem]);
+  const addNewFox: MouseEventHandler<HTMLButtonElement> = () => {
+    const id = generateId();
+    const url = `https://randomfox.ca/images/${random()}.jpg`;
+    setImages([...images, { id, url }]);
   };
 
   return (
@@ -30,17 +38,27 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1 className="text-3xl font-bold underline">Hey Platzi 😎!</h1>
-        <button onClick={addNewFox}>Add new fox</button>
-        {images.map(({ id, url }) => (
-          <div key={id} className="p-4">
+        <div className="m-4">
+          <button
+            onClick={addNewFox}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          >
+            Add new fox
+          </button>
+        </div>
+        {images.map(({ id, url }, index) => (
+          <div className="p-4" key={id}>
             <LazyImage
               src={url}
-              width={320}
+              width="320"
               height="auto"
-              title="Random Fox"
-              className="rounded bg-gray-300"
-              onClick={() => console.log("hola")}
+              className="mx-auto rounded-md bg-gray-300"
+              onClick={() => {
+                console.log("holi!");
+              }}
+              onLazyLoad={(img) => {
+                console.log(`Image #${index + 1} cargada. Nodo:`, img);
+              }}
             />
           </div>
         ))}
@@ -49,4 +67,6 @@ export default function Home() {
       <footer></footer>
     </div>
   );
-}
+};
+
+export default Home;
